@@ -17,7 +17,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             this.neste = neste;
         }
 
-        protected Node(T verdi)  // konstruktør
+        private Node(T verdi)  // konstruktør
         {
             this(verdi, null, null);
         }
@@ -29,7 +29,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private Node<T> hale;          // peker til den siste i listen
     private int antall;            // antall noder i listen
     private int endringer;   // antall endringer i listen
-    
+
 
     // konstruktør
     public DobbeltLenketListe(T[] a) {
