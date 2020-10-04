@@ -49,7 +49,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                     antall++;
                 }
             }
-            hale = p;
+            if (antall == 0) hode = hale = null;
+            else hode = hode.neste;
         }
 
 
