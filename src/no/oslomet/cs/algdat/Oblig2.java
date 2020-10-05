@@ -82,20 +82,26 @@ class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     // Oppgave 3-b
+
     public Liste<T> subliste(int fra, int til) {
+        endringer=0;   // Vilkår står i obligen
         fratilKontroll(antall, fra, til);
         Node<T> p = finnNode(fra);
         Liste<T> h = new DobbeltLenketListe<T>();
+        for(int i=fra; i<til;i++){
+            h.leggInn(p.verdi);
+            p=p.neste;
+        }
         return h;
     }
 
     private void fratilKontroll(int antall, int fra, int til) {
         if(fra<0)
-            throw new IndexOutOfBoundsException();
-        if(til>antall)
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("fra(" +fra+ ") er negativ");
+        if(til>antall)       // 'til' her er utenfor tabellen
+            throw new IndexOutOfBoundsException("til(" +til+ " )>antall("+ antall +")");
         if (fra> til)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("fra(" +fra+ ")>til(" +til+ ")- illegalt intervall");
     }
 
     // Oppgave 1
