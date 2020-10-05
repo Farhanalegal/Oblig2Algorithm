@@ -1,15 +1,8 @@
 package no.oslomet.cs.algdat;
 
 import java.util.Comparator;
-import java.util.ConcurrentModificationException;
-import java.util.NoSuchElementException;
-import java.util.StringJoiner;
-
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.function.Predicate;
-import java.util.Objects;
-
 class DobbeltLenketListe<T> implements Liste<T> {
     private static final class Node<T>   // en indre nodeklasse
     {
@@ -24,7 +17,7 @@ class DobbeltLenketListe<T> implements Liste<T> {
             this.neste = neste;
         }
 
-        protected Node(T verdi)  // konstruktør
+        private Node(T verdi)  // konstruktør
         {
             this(verdi, null, null);
         }
@@ -36,6 +29,24 @@ class DobbeltLenketListe<T> implements Liste<T> {
     private Node<T> hale;          // peker til den siste i listen
     private int antall;            // antall noder i listen
     private int endringer;   // antall endringer i listen
+    //Oppgave 3-a
+    //Hjelpemetode
+    private Node<T> finnNode(int indeks){
+        Node<T> p;     //p: returnNode her
+        if(indeks< antall/2){
+            p=hode;
+            for(int i=1; i<indeks;i++){
+                p=p.neste;
+            }
+        }
+        else{
+            p=hale;
+            for(int i=1; i<(antall-indeks);i++){
+                p=p.forrige;
+            }
+        }
+        return p;
+    }
 
     // legge til en konstruktør
     public DobbeltLenketListe(){
@@ -44,7 +55,7 @@ class DobbeltLenketListe<T> implements Liste<T> {
         antall = 0;
         endringer = 0;
     }
-
+    // Oppgave 1
     // konstruktør
     public DobbeltLenketListe(T[] a) {
         this();
@@ -68,51 +79,115 @@ class DobbeltLenketListe<T> implements Liste<T> {
 
 
     }
-
+    // Oppgave 1
     @Override
     public int antall() {
         return antall;
     }
+
     @Override
     public boolean tom() {
-        return antall == 0;
+        return antall == 0;    // listen blir tom hvis antall er 0
     }
+
+    @Override
+    public void nullstill() {
+
+    }
+
+    @Override
+    public Iterator< T > iterator() {
+        return null;
+    }
+
+    //Oppgave 2-a
     @Override
     public String toString()
     {
         StringBuilder s = new StringBuilder();
         s.append('[');
-        Node<T> p = hode;
-        s.append(p.verdi);
-        p = p.neste;
-        while (p!=null){
-            s.append(',').append(' ').append(p.verdi);
+        if (!tom()) {
+            Node< T > p = hode;
+            s.append(p.verdi);
             p = p.neste;
+            while (p != null) {
+                s.append(',').append(' ').append(p.verdi);
+                p = p.neste;
+            }
         }
+
         s.append(']');
         return s.toString();
     }
+    // Oppgave 2-a
     public String omvendtString()
     {
         StringBuilder s = new StringBuilder();
         s.append('[');
-        Node<T> p = hale;
-        s.append(p.verdi);
-        p = p.forrige;
-        while (p!=null){
-            s.append(',').append(' ').append(p.verdi);
+        if(!tom()) {
+            Node< T > p = hale;
+            s.append(p.verdi);
             p = p.forrige;
+            while (p != null) {
+                s.append(',').append(' ').append(p.verdi);
+                p = p.forrige;
+            }
         }
         s.append(']');
         return s.toString();
     }
+    // Oppgave 2-b
     @Override
     public boolean leggInn(T verdi)
     {
         Objects.requireNonNull(verdi);
         if(tom()) hode = hale = new Node<>(verdi, null, null);
         else hale = hale.neste = new Node<>(verdi,hale, null);
+        antall++;
+        endringer++;
         return true;
     }
+
+    @Override
+    public void leggInn(int indeks, T verdi) {
+
+    }
+
+    @Override
+    public boolean inneholder(T verdi) {
+        return false;
+    }
+    // Oppgave 3-a
+    @Override
+    public T hent(int indeks) {
+        indekskontroll(indeks,false);
+        return finnNode(indeks).verdi;
+    }
+
+    @Override
+    public int indeksTil(T verdi) {
+        return 0;
+    }
+    // Oppgave 3-a
+    @Override
+    public T oppdater(int indeks, T nyverdi) {
+        indekskontroll(indeks,false);
+        Objects.requireNonNull(nyverdi);
+        Node<T> p=finnNode(indeks);
+        T gammelverdi=p.verdi;
+        p.verdi=nyverdi;
+        return gammelverdi;
+    }
+
+    @Override
+    public boolean fjern(T verdi) {
+        return false;
+    }
+
+    @Override
+    public T fjern(int indeks) {
+        return null;
+    }
+
 
 }
