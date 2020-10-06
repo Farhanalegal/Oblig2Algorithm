@@ -147,16 +147,41 @@ class DobbeltLenketListe<T> implements Liste<T> {
         endringer++;
         return true;
     }
+    //oppgave 5
     @Override
     public void leggInn(int indeks, T verdi) {
+        Objects.requireNonNull(verdi,"null er ikke tillatt");
+        indekskontroll(indeks,true);
+        if(indeks==0){
+            if (antall == 0) hode = hale = new Node<>(verdi,null,null);
+            else {
+                Node<T> p = hode;
+                hode = new Node<>(verdi, null, hode);
+                p.forrige=hode;
+            }
+        }
+        else if (indeks==antall){
+            hale=hale.neste=new Node<>(verdi,hale,null);
+        }
+        else {
+            Node<T> p =hode;
+            Node<T> q=hode;
+            for(int i=1;i<indeks;i++)
+                p=p.neste;
+            for(int i=1;i<indeks+1;i++)
+                q=q.neste;
+            Node<T> r=new Node<T>(verdi,p,q);
+            p.neste=q.forrige=r;
+        }
+        endringer++;
+        antall++;
     }
     // oppgave 4
     @Override
     public boolean inneholder(T verdi) {
-        /*if(indeksTil(verdi)==-1) // Den er riktig
+        if(indeksTil(verdi)==-1)
             return false;
-        return true;*/
-        return indeksTil(verdi) !=-1;   // Den er best og enkelt!
+        return true;
     }
     // Oppgave 3-a
     @Override
