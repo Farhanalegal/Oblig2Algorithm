@@ -189,6 +189,9 @@ class DobbeltLenketListe<T> implements Liste<T> {
         return finnNode(indeks).verdi;
     }
 
+    private void indekskontroll(int indeks, boolean b) {
+    }
+
     @Override
     public int indeksTil(T verdi) {
         if(verdi==null)
