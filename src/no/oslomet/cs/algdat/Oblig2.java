@@ -191,7 +191,14 @@ class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int indeksTil(T verdi) {
-        return 0;
+        if(verdi==null)
+            return -1;
+        Node<T> p=hode;
+        for(int i=0; i<antall;i++){
+            if(p.verdi.equals((verdi))) return i;
+            p=p.neste;
+        }
+        return -1;
     }
     // Oppgave 3-a
     @Override
@@ -201,6 +208,7 @@ class DobbeltLenketListe<T> implements Liste<T> {
         Node<T> p=finnNode(indeks);
         T gammelverdi=p.verdi;
         p.verdi=nyverdi;
+        endringer++;
         return gammelverdi;
     }
 
