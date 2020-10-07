@@ -97,8 +97,19 @@ class DobbeltLenketListe<T> implements Liste<T> {
     public boolean tom() {
         return antall == 0;    // listen blir tom hvis antall er 0
     }
+    // Oppgave 7
     @Override
     public void nullstill() {
+        Node<T> node=hode;
+        for(int i=0;i<antall-1;i++){
+            node=node.neste;
+            node.forrige.neste=null;
+            node.forrige.verdi=null;
+        }
+        this.hode=null;  // Vi kan skrive (hode=hale=null;)
+        this.hale=null;  // Vi kan skrive (hode=hale=null;)
+        antall=0;
+        endringer++;
     }
     @Override
     public Iterator< T > iterator() {
