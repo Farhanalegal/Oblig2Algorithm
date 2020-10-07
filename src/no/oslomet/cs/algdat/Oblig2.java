@@ -18,6 +18,9 @@ class DobbeltLenketListe<T> implements Liste<T> {
         {
             this(verdi, null, null);
         }
+
+        public Node(T verdi, Node< T > hode) {
+        }
     } // Node
     // instansvariabler
     private Node<T> hode;          // peker til den første i listen
@@ -153,25 +156,14 @@ class DobbeltLenketListe<T> implements Liste<T> {
         Objects.requireNonNull(verdi,"null er ikke tillatt");
         indekskontroll(indeks,true);
         if(indeks==0){
-            if (antall == 0) hode = hale = new Node<>(verdi,null,null);
-            else {
-                Node<T> p = hode;
-                hode = new Node<>(verdi, null, hode);
-                p.forrige=hode;
-            }
+            hode= new Node<T>(verdi,hode);
         }
         else if (indeks==antall){
-            hale=hale.neste=new Node<>(verdi,hale,null);
+            hale=hale.neste=new Node<>(verdi);
         }
         else {
-            Node<T> p =hode;
-            Node<T> q=hode;
-            for(int i=1;i<indeks;i++)
-                p=p.neste;
-            for(int i=1;i<indeks+1;i++)
-                q=q.neste;
-            Node<T> r=new Node<T>(verdi,p,q);
-            p.neste=q.forrige=r;
+            Node<T> p =finnNode(indeks-1);
+            p.neste= new Node<>(verdi,p.neste);
         }
         endringer++;
         antall++;
@@ -215,13 +207,92 @@ class DobbeltLenketListe<T> implements Liste<T> {
         endringer++;
         return gammelverdi;
     }
+
+    //oppgave 6
     @Override
     public boolean fjern(T verdi) {
-        return false;
+        if(verdi==null)
+            return false;
+        Node<T> node= hode;
+        while (node!=null){
+            if (node.verdi.equals(verdi)){
+                break;
+            }
+            node=node.neste;
+        }
+        if(node==null)
+            return false;
+        if (node==hode){   // Verdien her er hode!
+            hode=hode.neste;
+            if(hode!=null){
+                hode.forrige=null;
+            }
+            else {
+                hale=null;
+            }
+        }
+        else if(node==hale){   // Verdien her er hale!
+            hale=hale.forrige;
+            hale.neste=null;
+        } else {             // Verdien her er midten!
+            node.forrige.neste=node.neste;
+            node.neste.forrige=node.forrige;
+        }
+        antall--;
+        endringer++;
+
+        return true;
     }
     @Override
     public T fjern(int indeks) {
-        return null;
+        indekskontroll(indeks,false);
+        if(tom())
+            return null;
+        Node<T>node;
+        T verdi;
+        if(antall==1){
+            verdi=hode.verdi;
+            hode=hale=null;
+
+        }
+        else if (indeks==0){
+            if (antall==2){
+                hode=hale;
+                hale.neste=null;
+                hode.forrige=null;
+            }
+            else {
+                node=hode.neste;
+                node.forrige=null;
+                hode=node;
+            }
+            verdi= hode.verdi;
+        }
+        else if(indeks==antall-1){
+            if(antall==2){
+                hale=hode;
+                hale.neste=null;
+                hode.forrige=null;
+            }
+            else{
+                node=hale.forrige;
+                node.neste=null;
+                hale=node;
+
+            }
+            verdi= hale.verdi;;
+        }
+        else {
+            node=finnNode(indeks);
+            verdi=node.verdi;
+            node.neste.forrige=node.forrige;
+            node.forrige.neste=node.neste;
+        }
+        antall--;
+        endringer++;
+
+
+        return verdi;
     }
 
 }
