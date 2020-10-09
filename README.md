@@ -68,7 +68,9 @@ Metoden her skal tømme listen og nulle alt slik at søppeltommeren
 
 kan hente alt som ikke lenger brukes.
 Metoden starter fra hoden mot halen ved hjelp pekeren neste!
+
 Oppgave 8:
+
 Den skal først sjekke om iteratorendringer er lik endringer.Deretter "denne" flyttes til den neste node.
 Metoden i oppgave b returnere en instans av iteratorklassen.
 Metoden i oppgave c skal sette pekeren "denne" til den noden indeks.
